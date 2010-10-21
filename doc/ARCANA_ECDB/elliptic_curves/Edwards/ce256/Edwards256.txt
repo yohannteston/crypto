@@ -1,0 +1,26 @@
+Elliptic curves under Edwards form of  order n=4*prime over a finite prime field F_p
+*************************************************************************************
+size(p) : about 256 bits
+x^2 +y^2= 1+d*x^2*y^2
+
+d is built from a random numbers rd by the following equation:
+
+ d = hextodec(sha512.hex("dec(rd)"))  modulo p
+
+We give also a point (gx,gy) of the group of the elliptic curve
+This point is random and is of order n or n/2 or n/4 (t=0,1,2)
+
+  gx = hextodec(sha512.hex("dec(r)"))  modulo p
+
+(we draw a random r, compute gx by the previous formula, test if 
+z = (1-g*x^2)/(1-d*gx^2)
+is a square, if yes, we compute gy, if no, we draw an another r)
+
+*********************************
+* Curves such that p mod 4 = 3  *
+*********************************
+
+
+
+
+

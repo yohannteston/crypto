@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "EllipticCurve.h"
-#include "interface.cc"
+#include "interface.h"
 
 
 using namespace std;
