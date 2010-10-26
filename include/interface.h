@@ -2,6 +2,7 @@
 #include "EllipticCurve.h"
 #include "Point.h"
 #include "DiffieHellman.h"
+#include "MasseyOmura.h"
 
 using namespace std;
 

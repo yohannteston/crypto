@@ -28,6 +28,7 @@ class Point {
 		inline void setPointAtInfinity(bool value) { pointAtInfinity = value; }
 
 		Point(mpz_class x, mpz_class y, EllipticCurve* curve);
+		Point();
 		Point(bool pointAtInfinity);
 		~Point(){}
 		// computes the opposite of this point
@@ -38,8 +39,6 @@ class Point {
 		Point doubling();
 		// computes the multiplication of this point by n
 		Point multiple(mpz_class n);
-		// computes this point's order
-		mpz_class order(); 
 
 		//overloaded operators
 		bool operator==(Point q);

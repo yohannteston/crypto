@@ -56,14 +56,47 @@ void multiple(EllipticCurve curve){
 
 void diffieHellman(EllipticCurve curve){
 	Point p = getAPoint(&curve);
-	DiffieHellman dh(p);
-	if(*(dh.getKeyA()) == *(dh.getKeyB()))
-		cout << "YaY" << endl;
-	cout << "DH (chosen point: " << *(dh.getP()) << ")" << endl
-	<< "Alice's key is " << *(dh.getKeyA()) << endl 
-	<< "Bob's key is " << *(dh.getKeyB()) << endl;
 
+	// create the actors for the exchange
+	DiffieHellman alice(&p), bob(&p);
 
+	// compute the intermediate results
+	Point aP = alice.initialComputation();
+	Point bP = bob.initialComputation();
+
+	// use the previous calculated values to get the shared key
+	Point keyAlice = alice.computeKey(bP);
+	Point keyBob = bob.computeKey(aP);
+
+	// check the result
+	if(keyAlice == keyBob)
+		cout << "The keys are the same" << endl;
+	else
+		cout << "Error, the keys differ" << endl;
+	cout << "DH (chosen point: " << p << ")" << endl
+	<< "Alice's key is " << keyAlice << endl 
+	<< "Bob's key is " << keyBob << endl;
+}
+
+void masseyOmura(EllipticCurve curve){
+	char message;
+	cout << "Enter a message: ";
+	cin >> message;
+	cout << endl;
+
+	// Scenario, Alice wants to securely send message to Bob
+	MasseyOmura alice(&curve), bob(&curve);
+	
+	Point m1 = alice.firstMessage(message);
+	Point m2 = bob.answerToFirstMessage(m1);
+	Point m3 = alice.computeCipher(m2);
+	char result = bob.decrypt(m3);
+
+	if(message == result)
+		cout << "The result matches the original message" << endl;
+	else
+		cout << "Error, the result differs from the original message" << endl;
+	cout << "Original message: " << message << endl << "MO result: " << result << endl;
 }
 
 void menu(EllipticCurve curve){
@@ -77,7 +110,8 @@ void menu(EllipticCurve curve){
 		<< "4: Multiple" << endl
 		<< "5: Print the current curve" << endl
 		<< "6: Change the curve" << endl
-		<< "7: Do a DH protocol run" << endl
+		<< "7: Do a Diffie-Hellman protocol run" << endl 
+		<< "8: Do a Massey-Omura protocol run" << endl
 		<< "Other: exit" << endl;
 		cin >> choice; 
 		switch(choice){
@@ -102,6 +136,9 @@ void menu(EllipticCurve curve){
 				break;
 			case 7:
 				diffieHellman(curve);
+				break;
+			case 8:
+				masseyOmura(curve);
 				break;
 			default:
 				done = true; 

@@ -11,17 +11,17 @@ using namespace std;
 
 class DiffieHellman {
 	private:
-		Point* keyA;
-		Point* keyB;
-		Point* p;
+		Point* p; // p is the public point both sides agreed on
+		mpz_class secret;
 
 	public:
-		DiffieHellman(Point p);
+		DiffieHellman(Point* p);
 		~DiffieHellman(){}
 
-		inline Point* getKeyA() { return keyA;}
-		inline Point* getKeyB() { return keyB;}
-		inline Point* getP() { return p;}
+		Point initialComputation();
+		Point computeKey(Point received);
+
+		inline mpz_class getSecret() {return secret;}
 
 };
 

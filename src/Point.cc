@@ -1,5 +1,10 @@
 #include "Point.h"
 
+Point::Point():x(0),y(0) {
+	curve = NULL;
+	pointAtInfinity = false;
+}
+
 Point::Point(mpz_class x, mpz_class y, EllipticCurve* curve){	
 	this->x = x;
 	this->y = y;
@@ -65,7 +70,19 @@ Point Point::sum(Point q){
 }
 
 Point Point::multiple(mpz_class n){
-	Point q = *this;
+	if(n == 0){
+		//the result is the point at infinity
+		return Point(true);
+	}
+
+	Point q;
+	if(n < 0){
+		// -n becomes n
+		n *= -1;
+		q = this->opposite();
+	}else
+		q = *this;
+
 	char* s = NULL;
 	s = mpz_get_str(s,2,n.get_mpz_t());
 	// we have to skip the first character
@@ -77,10 +94,6 @@ Point Point::multiple(mpz_class n){
 		s ++;
 	}
 	return q;
-}
-
-mpz_class Point::order(){
-
 }
 
 bool Point::operator==(Point q){
