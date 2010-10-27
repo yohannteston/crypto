@@ -3,6 +3,7 @@
 #include "Point.h"
 #include "DiffieHellman.h"
 #include "MasseyOmura.h"
+#include "util.h"
 
 using namespace std;
 

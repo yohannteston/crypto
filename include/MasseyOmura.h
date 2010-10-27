@@ -6,7 +6,7 @@
 
 #include <string>
 #include <iostream>
-
+#include <gmpxx.h>
 
 using namespace std;
 
@@ -22,13 +22,13 @@ class MasseyOmura{
 		inline EllipticCurve* getCurve() { return curve;}
 		inline mpz_class getSecret() { return secret;}
 
-		Point translateMessage(char message);
-		char translatePoint(Point p);
+		Point translateMessage(mpz_class message);
+		mpz_class translatePoint(Point p);
 
-		Point firstMessage(char message);
+		Point firstMessage(mpz_class message);
 		Point answerToFirstMessage(Point first);
 		Point computeCipher(Point answer);
-		char decrypt(Point cipher);
+		mpz_class decrypt(Point cipher);
 
 };
 

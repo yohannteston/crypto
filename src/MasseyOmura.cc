@@ -17,8 +17,16 @@ MasseyOmura::MasseyOmura(EllipticCurve* curve){
 }
 	
 
-Point MasseyOmura::translateMessage(char message){
+Point MasseyOmura::translateMessage(mpz_class message){
 	mpz_class x_j, x_j_3, s_j, tmp;
+	
+	// first, we need to check if the message can fit in a point
+	tmp = curve->getP()/100;
+	if(message >= tmp){
+		// the message is too big
+		// for now, return the point at infinity
+		return Point(true);
+	}
 	mpz_class p = (curve->getP() - 1)/2;
 	for(unsigned long int j=0;j<100;j++){
 		x_j = 100*message + j;
@@ -39,10 +47,10 @@ Point MasseyOmura::translateMessage(char message){
 	return Point(x_j,tmp, curve);
 }
 
-char MasseyOmura::translatePoint(Point p){
+mpz_class MasseyOmura::translatePoint(Point p){
 	mpz_class x;
 	mpz_fdiv_q_ui(x.get_mpz_t(),p.getX().get_mpz_t(), 100);
-	return (char)x.get_ui();
+	return x;
 }
 
 /*
@@ -108,8 +116,11 @@ Point MasseyOmura::doMasseyOmura(char message){
 
 */
 
-Point MasseyOmura::firstMessage(char message){
+Point MasseyOmura::firstMessage(mpz_class message){
 	Point p = this->translateMessage(message);
+	if(p.isPointAtInfinity()){
+		return p;
+	}
 	return p.multiple(secret);
 }
 
@@ -124,7 +135,7 @@ Point MasseyOmura::computeCipher(Point answer){
 	return answer.multiple(invertedSecret); //this is the cipher
 }
 
-char MasseyOmura::decrypt(Point cipher){
+mpz_class MasseyOmura::decrypt(Point cipher){
 	// In order to decrypt the message, we need to invert the secret
 	
 	mpz_class invertedSecret;

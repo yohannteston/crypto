@@ -79,24 +79,39 @@ void diffieHellman(EllipticCurve curve){
 }
 
 void masseyOmura(EllipticCurve curve){
-	char message;
+	string message;
 	cout << "Enter a message: ";
 	cin >> message;
 	cout << endl;
 
+	string m = string2Bin(message);	
+	mpz_class value(m, 2);
+	
 	// Scenario, Alice wants to securely send message to Bob
 	MasseyOmura alice(&curve), bob(&curve);
 	
-	Point m1 = alice.firstMessage(message);
+	Point m1 = alice.firstMessage(value);
+	if(m1.isPointAtInfinity()){
+		cout << "The message is too big to fit in a point" << endl;
+		return;
+	}
+	cout << "The message value is " << value << endl;
+	cout << "m1 is " << m1 << endl;
 	Point m2 = bob.answerToFirstMessage(m1);
+	cout << "m2 is " << m2 << endl;
 	Point m3 = alice.computeCipher(m2);
-	char result = bob.decrypt(m3);
+	cout << "m3 is " << m3 << endl;
+	mpz_class result = bob.decrypt(m3);
+	cout << "result is " << result << endl;
 
-	if(message == result)
+	char* s = NULL;
+	m = mpz_get_str(s,2,result.get_mpz_t());
+
+	if(value == result)
 		cout << "The result matches the original message" << endl;
 	else
 		cout << "Error, the result differs from the original message" << endl;
-	cout << "Original message: " << message << endl << "MO result: " << result << endl;
+	cout << "Original message: " << message << endl << "MO result: " << bin2String(m) << endl;
 }
 
 void menu(EllipticCurve curve){
