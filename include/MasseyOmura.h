@@ -7,6 +7,8 @@
 #include <string>
 #include <iostream>
 #include <gmpxx.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 

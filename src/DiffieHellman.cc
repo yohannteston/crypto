@@ -7,6 +7,9 @@ DiffieHellman::DiffieHellman(Point* p){
 
 	// initialize the random number generator
 	gmp_randinit_mt(state);
+	// set the seed using some "classical" randomness
+	srand(time(NULL));
+	gmp_randseed_ui(state, (unsigned long int)rand());
 	
 	// generate the secret 
 	mpz_urandomm(secret.get_mpz_t(),state,p->getCurve()->getN().get_mpz_t());

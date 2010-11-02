@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <gmpxx.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "Point.h"
 #include "EllipticCurve.h"

@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <gmpxx.h>
-#include <vector>
-#include "EllipticCurve.h"
 
 using namespace std;
 
+class Point;
+
+#include "EllipticCurve.h"
 
 class Point {
 	private:
@@ -15,8 +16,6 @@ class Point {
 		mpz_class y;
 		EllipticCurve* curve;
 		bool pointAtInfinity; 
-
-		Point privateMultiple(Point p, mpz_class n, vector<Point> values, bool first);
 
 	public:
 		// getters/setters

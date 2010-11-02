@@ -55,7 +55,8 @@ void multiple(EllipticCurve curve){
 }
 
 void diffieHellman(EllipticCurve curve){
-	Point p = getAPoint(&curve);
+	// use the generator given with the curve as the starting point
+	Point p = Point(curve.getGx(), curve.getGy(), &curve);
 
 	// create the actors for the exchange
 	DiffieHellman alice(&p), bob(&p);

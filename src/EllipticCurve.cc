@@ -1,6 +1,6 @@
 #include "EllipticCurve.h"
 
-EllipticCurve::EllipticCurve(mpz_class a1, mpz_class a2, mpz_class a3, mpz_class a4, mpz_class a6, mpz_class p, mpz_class n){
+EllipticCurve::EllipticCurve(mpz_class a1, mpz_class a2, mpz_class a3, mpz_class a4, mpz_class a6, mpz_class p, mpz_class n, mpz_class gx, mpz_class gy){
 	this->a1 = a1;
 	this->a2 = a2;
 	this->a3 = a3;
@@ -8,6 +8,8 @@ EllipticCurve::EllipticCurve(mpz_class a1, mpz_class a2, mpz_class a3, mpz_class
 	this->a6 = a6;
 	this->p = p;
 	this->n = n;
+	this->gx = gx;
+	this->gy = gy;
 }
 
 EllipticCurve::EllipticCurve(ifstream& f){
@@ -32,9 +34,12 @@ EllipticCurve::EllipticCurve(ifstream& f){
 				a4 = mpz_class(value);
 			else if(name == "a6")
 				a6 = mpz_class(value);
-			else if(name == "n"){
+			else if(name == "n")
 				n = mpz_class(value);
-			}
+			else if(name == "gx")
+				gx = mpz_class(value);
+			else if(name == "gy")
+				gy = mpz_class(value);
 		}
 	}
 }
@@ -45,6 +50,8 @@ ostream & operator <<(ostream & cout, EllipticCurve c) {
 	<< "n: " << c.n << endl	
 	<< "a1: " << c.a1 << endl << "a2: " << c.a2 << endl <<
 	"a3: " << c.a3 << endl << "a4: " << c.a4 << endl  
-	<< "a6: " << c.a6 << endl;
+	<< "a6: " << c.a6 << endl
+	<< "gx: " << c.gx << endl 
+	<< "gy: " << c.gy << endl;
 	return cout;
 }

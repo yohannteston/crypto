@@ -7,8 +7,11 @@ MasseyOmura::MasseyOmura(EllipticCurve* curve){
 	gmp_randstate_t state;
 	
 	// initializing the random number generator
-	gmp_randinit_mt(state);
-	
+	gmp_randinit_mt(state);	
+	// set the seed using some "classical" randomness
+	srand(time(NULL));
+	gmp_randseed_ui(state, (unsigned long int)rand());
+
 	//getting a
 	mpz_urandomm(secret.get_mpz_t(),state,curve->getN().get_mpz_t());
 	if(secret == 0)
