@@ -18,7 +18,7 @@ run: bin/crypto
 
 #### RULE TO BUILD BINARIES FROM OBJECT FILES
 
-bin/crypto: $(addprefix build/, crypto.o Point.o EllipticCurve.o interface.o DiffieHellman.o MasseyOmura.o)
+bin/crypto: $(addprefix build/, EllipticCurve.o Point.o interface.o DiffieHellman.o MasseyOmura.o util.o crypto.o)
 	$(CC) -o$i $@ $^ -lgmpxx -lgmp
 
 ###### GENERIC BUILD PATTERNS ########
