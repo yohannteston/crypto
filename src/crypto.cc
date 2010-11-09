@@ -1,3 +1,9 @@
+/**
+ * \file crypto.cc
+ * \brief main program. Reads a filename to load a curve with a point. Displays a menu of possible actions.
+ * \author Yohann Teston & Christophe Carasco
+ */
+
 #include <gmpxx.h>
 #include <iostream>
 #include <fstream>

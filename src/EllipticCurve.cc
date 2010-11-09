@@ -1,5 +1,12 @@
+/**
+ * \file EllipticCurve.h
+ * \brief Defines the methods declared in /include/EllipticCurve.h
+ * \author Yohann Teston & Christophe Carasco
+ */
+
 #include "EllipticCurve.h"
 
+/* Constructors */
 EllipticCurve::EllipticCurve(mpz_class a1, mpz_class a2, mpz_class a3, mpz_class a4, mpz_class a6, mpz_class p, mpz_class n, mpz_class gx, mpz_class gy){
 	this->a1 = a1;
 	this->a2 = a2;
@@ -12,7 +19,7 @@ EllipticCurve::EllipticCurve(mpz_class a1, mpz_class a2, mpz_class a3, mpz_class
 	this->gy = gy;
 }
 
-EllipticCurve::EllipticCurve(ifstream& f){
+EllipticCurve::EllipticCurve(ifstream& f){	/* from a well-formated file: "key=value" on each line */
 	size_t delim;
 	string line, name, value;
 	char buf[256];
@@ -45,6 +52,7 @@ EllipticCurve::EllipticCurve(ifstream& f){
 }
 
 
+/* overloaded operator to display a curve, i.e its parameters */
 ostream & operator <<(ostream & cout, EllipticCurve c) {
 	cout << "Elliptic curve : " << endl << "p: " << c.p << endl
 	<< "n: " << c.n << endl	

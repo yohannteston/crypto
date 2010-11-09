@@ -1,3 +1,9 @@
+/**
+ * \file util.h
+ * \brief Declaration of some helper methods to handle binary representation of a string and vice-versa
+ * \author Yohann Teston & Christophe Carasco
+ */
+
 #ifndef __UTIL__
 #define __UTIL__
 

@@ -1,3 +1,9 @@
+/**
+ * \file util.cc
+ * \brief Definition of the helper methods declared in /include/util.h
+ * \author Yohann Teston & Christophe Carasco
+ */
+
 #include "util.h"
 
 string char2Bin(unsigned char c){
