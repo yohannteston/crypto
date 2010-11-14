@@ -29,13 +29,14 @@ class DiffieHellman {
 		~DiffieHellman(){}
 
 		/* Computes the first computation A=aP where P is the agreed public point and a is the secret integer */
-		Point initialComputation();
+		Point* initialComputation();
 
 		/* Computes the last computation K=aB where B is the received first computation from the other entity and a is the secret integer */
-		Point computeKey(Point received);
+		Point* computeKey(Point* received);
 
 		/* Getter */
 		inline mpz_class getSecret() {return secret;}
+		inline Point* getPoint() { return p;}
 
 };
 

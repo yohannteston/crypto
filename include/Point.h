@@ -35,22 +35,22 @@ class Point {
 		/* Constructors */
 		Point(mpz_class x, mpz_class y, EllipticCurve* curve);		/* links a point with coordinates (x, y) to the given curve */
 		Point();							/* Creates a point with cooordinates (0, 0) */
-		Point(bool pointAtInfinity);					/* Creates the Point at infinity */
+		Point(bool pointAtInfinity, EllipticCurve* curve);	/* Creates the Point at infinity */
 
 		/* Destructor */
 		~Point(){}
 
 		/* computes the opposite of this point */
-		Point opposite(); 
+		Point* opposite(); 
 		/* computes the sum of this point and q */
-		Point sum(Point q);
+		Point* sum(Point* q);
 		/* doubles this point */
-		Point doubling();
+		Point* doubling();
 		/* computes the multiplication of this point by n */
-		Point multiple(mpz_class n);
+		Point* multiple(mpz_class n);
 
 		/* overloaded operators */
 		bool operator==(Point q);
-		friend ostream & operator <<(ostream & cout, Point p);  
+		friend ostream & operator <<(ostream & cout, Point p); 
 };
 #endif

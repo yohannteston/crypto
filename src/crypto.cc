@@ -25,5 +25,5 @@ int main(int argc,char** argv){
 	ifstream f(filename.c_str(), ios::in);
 	EllipticCurve curve(f);	
 	cout << curve << endl;
-	menu(curve);
+	menu(&curve);
 }

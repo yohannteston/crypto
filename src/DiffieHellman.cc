@@ -22,15 +22,19 @@ DiffieHellman::DiffieHellman(Point* p){
 }
 
 // this function computes aP
-Point DiffieHellman::initialComputation(){
+Point* DiffieHellman::initialComputation(){
+	if(p == NULL)
+		return NULL;
 	//compute secret*P, first step of the exchange for this end
 	return p->multiple(secret);
 
 }
 
 // this function computes the shared key
-Point DiffieHellman::computeKey(Point received){
-	return received.multiple(secret);
+Point* DiffieHellman::computeKey(Point* received){
+	if(received == NULL)
+		return NULL;
+	return received->multiple(secret);
 }
 
 

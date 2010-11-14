@@ -10,12 +10,14 @@
 #include "DiffieHellman.h"
 #include "MasseyOmura.h"
 #include "util.h"
+#include "MessageTranslation.h"
+#include "ElGamal.h"
 
 using namespace std;
 
-EllipticCurve getACurve();
+EllipticCurve* getACurve();
 
-Point getAPoint(EllipticCurve* curve);
+Point* getAPoint(EllipticCurve* curve);
 	
-void menu(EllipticCurve curve);
+void menu(EllipticCurve* curve);
 
