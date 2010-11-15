@@ -1,13 +1,18 @@
 #include "ElGamal.h"
 
 ElGamal::ElGamal(Point* p){
+	initialize(p);
+}
+
+
+// initialize a ElGamal object to be ready to send messages to it. Basically, it sets p, q and the secret
+void ElGamal::initialize(Point* p){
 	this->p = p;
 	hasBeenInitialized = true;
 	gmp_randstate_t state;
 	// initializing the random number generator
 	gmp_randinit_mt(state);	
 	// set the seed using some "classical" randomness
-	srand(clock());
 	gmp_randseed_ui(state, (unsigned long int)rand());
 
 	//getting the secret

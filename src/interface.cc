@@ -119,7 +119,7 @@ void diffieHellman(EllipticCurve* curve){
 		cout << "The keys are the same" << endl;
 	else
 		cout << "Error, the keys differ" << endl;
-	cout << "DH (chosen point: " << *p << ")" << endl
+	cout << "Diffie-Hellman (chosen point: " << *p << ")" << endl
 	<< "Alice's key is " << *keyAlice << endl 
 	<< "Bob's key is " << *keyBob << endl;
 }
@@ -201,7 +201,7 @@ void masseyOmura(EllipticCurve* curve){
 		cout << "The result matches the original message" << endl;
 	else
 		cout << "Error, the result differs from the original message" << endl;
-	cout << "Original message: " << message << endl << "MO result: " << bin2String(mBin) << endl;
+	cout << "Original message: " << message << endl << "Massey-Omura result: " << bin2String(mBin) << endl;
 }
 
 void elGamal(EllipticCurve* curve){
@@ -217,6 +217,9 @@ void elGamal(EllipticCurve* curve){
 	Point* generator = new Point(curve->getGx(), curve->getGy(),curve);
 	ElGamal alice, bob(generator);
 	
+	cout << "First step: Alice sends " << message << " to Bob." << endl  
+	<< "Bob's secret is " << bob.getSecret() << endl;
+
 	//first, translate the message in a point 
 	Point* m = MessageTranslation::translateMessage(value, curve);
 	if(m == NULL){	
@@ -232,7 +235,7 @@ void elGamal(EllipticCurve* curve){
 		return;
 	}
 	
-	/* First step, Alice translates the message point in two "cipherpoints" */
+	/* Next step, Alice translates the message point in two "cipherpoints" */
 
 	mpz_class k;
 	Point* m1 = alice.getM1(&k);
@@ -269,13 +272,85 @@ void elGamal(EllipticCurve* curve){
 
 	char* s = NULL;
 	mBin = mpz_get_str(s,2,result.get_mpz_t());
+	string message2 = bin2String(mBin);
 
 	/* checks the result */
 	if(value == result)
 		cout << "The result matches the original message" << endl;
 	else
 		cout << "Error, the result differs from the original message" << endl;
-	cout << "Original message: " << message << endl << "MO result: " << bin2String(mBin) << endl;
+	cout << "Original message: " << message << endl << "ElGamal result: " << message2 << endl;
+
+	/* Now, Bob sends back the message to Alice */
+	mpz_class value2(string2Bin(message2),2);
+
+
+	//First, initialize Alice's keys
+	alice.initialize(generator);
+	
+	cout << "Second step: Bob sends " << message2 << " to Alice." << endl  
+	<< "Alice's secret is " << alice.getSecret() << endl;
+
+
+	//Then, translate the message in a point 
+	m = MessageTranslation::translateMessage(value2, curve);
+
+	cout << "The second m is " << *m << endl;
+	cout << "The second m's decimal value is " << value << endl;
+
+	if(m == NULL){	
+		cout << "The message is too big to fit in a point" << endl;
+		return;
+	}
+	
+	/* Bob downloads Alice's public key (p, q and the curve those points are on) */
+	if(!bob.setPublicKey(alice.getP(), alice.getQ())){
+		cout << "Error while setting Alice's public key. Can't continue" << endl;
+		return;
+	}
+	
+	/* Next step, Bob translates the message point in two "cipherpoints" */
+	m1 = bob.getM1(&k);
+	if(m1 == NULL){
+		cout << "Couldn't get m1, can't continue." << endl;
+		return;
+	}
+
+	m2 = bob.getM2(m,k);
+	if(m2 == NULL){
+		cout << "Couldn't get m2, can't continue." << endl;
+		return;
+	}
+	
+	/* NETWORK COMMUNICATION: Bob sends both "cipherpoints" to Alice */
+
+	/* "Alice" displays the messages and decrypts them */
+	cout << "The second m1 is " << *m1 << endl;
+	cout << "The second m2 is " << *m2 << endl;
+	m3 = alice.decrypt(m1,m2);	
+	if(m3 == NULL){
+		cout << "Couldn't get the result, can't continue." << endl;
+		return;
+	}
+
+
+	cout << "The second m3 (resulting point) is " << *m3 << endl;
+	
+	// translates the point into the message
+	result = MessageTranslation::translatePoint(m3);
+
+	/* "Alice" displays the resulting message */
+	cout << "The decimal result is " << result << endl;
+
+	char* s2 = NULL;
+	mBin = mpz_get_str(s2,2,result.get_mpz_t());
+
+	/* checks the result */
+	if(value2 == result)
+		cout << "The result matches the original message" << endl;
+	else
+		cout << "Error, the result differs from the original message" << endl;
+	cout << "Original message: " << message2 << endl << "ElGamal result: " << bin2String(mBin) << endl;
 }
 
 /* displays a menu allowing the user to make some basic operations: sum, doubling, multiple, print the curve, change the curve, do a Diffie-Hellman protocol run or a Massey-Omura run. */

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdlib.h>
 #include "EllipticCurve.h"
 #include "interface.h"
 
@@ -22,6 +23,9 @@ int main(int argc,char** argv){
 	}else{
 		filename = argv[1];
 	}
+
+	srand(time(NULL));
+
 	ifstream f(filename.c_str(), ios::in);
 	EllipticCurve curve(f);	
 	cout << curve << endl;

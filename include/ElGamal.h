@@ -5,7 +5,7 @@
 
 #include "EllipticCurve.h"
 #include "Point.h"
-
+#include <stdlib.h>
 
 class ElGamal{
 	private:
@@ -27,6 +27,7 @@ class ElGamal{
 		inline void setP(Point* p) { this->p = p;}
 		inline void setQ(Point* q) { this->q = q;}
 
+		void initialize(Point* p);
 		Point* getM1(mpz_class* k);
 		Point* getM2(Point* message, mpz_class k);
 		Point* decrypt(Point* m1, Point* m2);

@@ -16,7 +16,6 @@ MasseyOmura::MasseyOmura(EllipticCurve* curve){
 	// initializing the random number generator
 	gmp_randinit_mt(state);	
 	// set the seed using some "classical" randomness
-	srand(clock());
 	gmp_randseed_ui(state, (unsigned long int)rand());
 
 	//getting the secret
