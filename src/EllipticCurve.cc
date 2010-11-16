@@ -51,7 +51,6 @@ EllipticCurve::EllipticCurve(ifstream& f){	/* from a well-formated file: "key=va
 	}
 }
 
-
 /* overloaded operator to display a curve, i.e its parameters */
 ostream & operator <<(ostream & cout, EllipticCurve c) {
 	cout << "Elliptic curve : " << endl << "p: " << c.p << endl

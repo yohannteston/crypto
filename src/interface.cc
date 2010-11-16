@@ -33,7 +33,13 @@ Point* getAPoint(EllipticCurve* curve){
 	cin >> value;
 	cout << endl;
 	mpz_class y(value);
-	return new Point(x,y,curve);
+	Point* p = new Point(x,y,curve);
+	// check if p is a point on curve
+	if(p->check())
+		cout << "Check OK, the given point is on the curve." << endl;
+	else
+		cout << "Check failed, the point is not on the curve. Be careful using it." << endl;
+	return p;
 }
 
 /* Computes and displays the opposite of a specified point (of a curve) */
@@ -384,11 +390,11 @@ void menu(EllipticCurve* curve){
 				multiple(curve);
 				break;
 			case 5: 
-				cout << curve << endl;
+				cout << *curve << endl;
 				break;
 			case 6: 
 				curve = getACurve();
-				cout << curve << endl;
+				cout << *curve << endl;
 				break;
 			case 7:
 				diffieHellman(curve);

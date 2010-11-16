@@ -40,6 +40,8 @@ class Point {
 		/* Destructor */
 		~Point(){}
 
+		/* check that this point is on curve */
+		bool check();
 		/* computes the opposite of this point */
 		Point* opposite(); 
 		/* computes the sum of this point and q */

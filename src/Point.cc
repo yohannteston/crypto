@@ -25,11 +25,25 @@ Point::Point(bool pointAtInfinity, EllipticCurve* curve):x(0),y(0){
 	this->curve = curve;
 }
 
+/* return true if this point is on the curve, false otherwise */
+bool Point::check(){
+	if(curve == NULL)
+		return false;
+	//let's check if this point verifies the Weierstrass' equation
+	mpz_class right = y*y + curve->getA1()*y*x + curve->getA3()*y;
+	mpz_class left = x*x*x + curve->getA2()*x*x + curve->getA4()*x + curve->getA6();
+	mpz_mod(right.get_mpz_t(), right.get_mpz_t(), curve->getP().get_mpz_t());
+	mpz_mod(left.get_mpz_t(), left.get_mpz_t(), curve->getP().get_mpz_t());
+	return right == left;
+}
+
+
+
 /* computes the opposite of this point according to the formulas given in class and return it */
 Point* Point::opposite(){
 	if(pointAtInfinity){
 		//this point is the point at infinity
-		return new Point(true, curve);
+		return this;
 	}
 	mpz_class y_q = -y -curve->getA1()*x - curve->getA3();
 	mpz_mod(y_q.get_mpz_t(), y_q.get_mpz_t(), curve->getP().get_mpz_t());	/* Don't forget to apply the modulus because the curve is defined on F_p */
@@ -40,7 +54,7 @@ Point* Point::opposite(){
 Point* Point::doubling(){
 	if(pointAtInfinity){
 		//twice the point at infinity is the point at infinity
-		return new Point(true, curve);
+		return this;
 	}
 	// we compute the denominator
 	mpz_class lambda = (x*x*3 + curve->getA2()*x*2 + curve->getA4() - curve->getA1()*y);
@@ -66,7 +80,7 @@ Point* Point::sum(Point* q){
 	}
 	/* particular case 1: both terms are the point at infinity, then return the point at infinity */
 	if(q->isPointAtInfinity() &&  this->pointAtInfinity){
-		return new Point(true, curve);
+		return this;
 	}
 
 	/* particular cases 2 & 3: if one of the points is the point at infinity, then return the other point */
